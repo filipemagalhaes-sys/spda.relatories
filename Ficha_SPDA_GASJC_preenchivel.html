@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de Levantamento de Campo — SPDA | GAP-SJ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --azul:       #1A3A6B;
+  --azul-med:   #2E5FA3;
+  --azul-claro: #EEF3FA;
+  --dourado:    #C8A84B;
+  --verde-bg:   #EAF3DE;
+  --verde-tx:   #3B6D11;
+  --roxo-bg:    #EEEDFE;
+  --roxo-tx:    #3C3489;
+  --ambar-bg:   #FDF3DC;
+  --ambar-tx:   #7B5E00;
+  --verm-bg:    #FDEEEE;
+  --verm-tx:    #791F1F;
+  --cinza-bg:   #F5F5F3;
+  --cinza-ln:   #CCCCCA;
+  --txt:        #1A1A1A;
+  --txt2:       #666664;
+  --white:      #FFFFFF;
+  --radius:     4px;
+  --radius-lg:  8px;
+  --font:       'IBM Plex Sans', sans-serif;
+  --mono:       'IBM Plex Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  font-size: 13px;
+  color: var(--txt);
+  background: #F0EDE8;
+  padding: 24px 16px 48px;
+}
+
+.wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── CABEÇALHO ── */
+.header {
+  background: var(--azul);
+  color: white;
+  padding: 18px 24px 14px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  border-bottom: 3px solid var(--dourado);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.header-left h1 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+.header-left p {
+  font-size: 11px;
+  opacity: 0.75;
+  line-height: 1.5;
+}
+.header-right {
+  text-align: right;
+  font-size: 10.5px;
+  opacity: 0.8;
+  line-height: 1.7;
+}
+
+/* ── BARRA DE PROGRESSO ── */
+.progress-bar {
+  background: white;
+  border: 1px solid var(--cinza-ln);
+  border-top: none;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.progress-track {
+  flex: 1;
+  height: 4px;
+  background: var(--cinza-ln);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--dourado);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+.progress-label {
+  font-size: 11px;
+  color: var(--txt2);
+  min-width: 80px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── AÇÕES TOPO ── */
+.toolbar {
+  background: white;
+  border: 1px solid var(--cinza-ln);
+  border-top: none;
+  padding: 8px 24px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-family: var(--font);
+  font-weight: 500;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: 1px solid var(--cinza-ln);
+  background: white;
+  color: var(--txt);
+  transition: background 0.15s;
+}
+.btn:hover { background: var(--cinza-bg); }
+.btn-primary {
+  background: var(--azul);
+  color: white;
+  border-color: var(--azul);
+}
+.btn-primary:hover { background: var(--azul-med); }
+.btn-danger {
+  background: var(--verm-bg);
+  color: var(--verm-tx);
+  border-color: #FFCCCC;
+}
+.btn-danger:hover { background: #FFE0E0; }
+.toolbar-sep { flex: 1; }
+.saved-indicator {
+  font-size: 11px;
+  color: var(--verde-tx);
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+.saved-indicator.show { display: flex; }
+
+/* ── SEÇÕES ── */
+.secao {
+  background: white;
+  border: 1px solid var(--cinza-ln);
+  border-top: none;
+}
+.secao:last-child {
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.sec-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  background: var(--azul);
+  cursor: pointer;
+  user-select: none;
+}
+.sec-header.verde { background: var(--verde-bg); }
+.sec-header.verde .sec-num,
+.sec-header.verde .sec-title { color: var(--verde-tx); }
+.sec-header.roxo { background: var(--roxo-bg); }
+.sec-header.roxo .sec-num,
+.sec-header.roxo .sec-title { color: var(--roxo-tx); }
+.sec-num {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  font-family: var(--mono);
+  min-width: 20px;
+}
+.sec-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: white;
+  flex: 1;
+}
+.sec-sub {
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.55);
+}
+.sec-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.badge-calc { background: var(--azul-claro); color: var(--azul-med); }
+.badge-obrig { background: var(--verm-bg); color: var(--verm-tx); }
+.badge-spda { background: var(--verde-bg); color: var(--verde-tx); }
+.badge-misto { background: var(--roxo-bg); color: var(--roxo-tx); }
+.sec-toggle { color: rgba(255,255,255,0.5); font-size: 14px; transition: transform 0.2s; }
+.sec-toggle.open { transform: rotate(180deg); }
+
+.sec-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.sec-body.collapsed { display: none; }
+
+/* ── GRID DE CAMPOS ── */
+.grid { display: grid; gap: 10px; }
+.g1 { grid-template-columns: 1fr; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.g4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.g13 { grid-template-columns: 1fr 3fr; }
+.g21 { grid-template-columns: 2fr 1fr; }
+.g211 { grid-template-columns: 2fr 1fr 1fr; }
+.g112 { grid-template-columns: 1fr 1fr 2fr; }
+.g1111 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+@media (max-width: 600px) {
+  .g2,.g3,.g4,.g13,.g21,.g211,.g112,.g1111 { grid-template-columns: 1fr; }
+}
+
+/* ── CAMPO INDIVIDUAL ── */
+.campo { display: flex; flex-direction: column; gap: 3px; }
+.campo label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--txt);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1.3;
+}
+.campo label .badge-mini {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+.campo input[type="text"],
+.campo input[type="number"],
+.campo input[type="date"],
+.campo select,
+.campo textarea {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 12.5px;
+  font-family: var(--font);
+  border: 1px solid var(--cinza-ln);
+  border-radius: var(--radius);
+  background: var(--cinza-bg);
+  color: var(--txt);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  border-color: var(--azul-med);
+  background: white;
+  box-shadow: 0 0 0 2px rgba(46,95,163,0.12);
+}
+.campo textarea { resize: vertical; min-height: 60px; }
+.campo select { cursor: pointer; }
+.campo .hint {
+  font-size: 10px;
+  color: var(--txt2);
+  line-height: 1.3;
+}
+.campo.filled input,
+.campo.filled select,
+.campo.filled textarea {
+  border-color: var(--azul-med);
+  background: white;
+}
+
+/* ── CHECKBOXES ── */
+.check-group { display: flex; flex-direction: column; gap: 3px; }
+.check-group > label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--txt);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.check-options {
+  display: grid;
+  gap: 4px;
+}
+.check-options.col2 { grid-template-columns: 1fr 1fr; }
+.check-options.col3 { grid-template-columns: 1fr 1fr 1fr; }
+.check-options.col4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+@media (max-width: 600px) {
+  .check-options.col2,
+  .check-options.col3,
+  .check-options.col4 { grid-template-columns: 1fr; }
+}
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  border: 1px solid var(--cinza-ln);
+  border-radius: var(--radius);
+  background: var(--cinza-bg);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  font-size: 11.5px;
+  line-height: 1.3;
+}
+.check-item:hover { background: var(--azul-claro); border-color: var(--azul-med); }
+.check-item input[type="checkbox"],
+.check-item input[type="radio"] {
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  accent-color: var(--azul);
+  flex-shrink: 0;
+}
+.check-item.checked {
+  background: var(--azul-claro);
+  border-color: var(--azul-med);
+  color: var(--azul);
+  font-weight: 500;
+}
+.check-item.checked-verde {
+  background: var(--verde-bg);
+  border-color: var(--verde-tx);
+  color: var(--verde-tx);
+}
+.check-item.checked-verm {
+  background: var(--verm-bg);
+  border-color: var(--verm-tx);
+  color: var(--verm-tx);
+}
+
+/* ── SEPARADORES E BOXES ── */
+.sep { height: 1px; background: var(--cinza-ln); margin: 2px 0; }
+.nota {
+  background: var(--ambar-bg);
+  border: 1px solid var(--dourado);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--ambar-tx);
+  line-height: 1.6;
+}
+.nota strong { font-weight: 600; }
+.sub-header {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--azul);
+  padding: 6px 10px;
+  background: var(--azul-claro);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--azul);
+}
+.sub-header.verde {
+  color: var(--verde-tx);
+  background: var(--verde-bg);
+  border-color: var(--verde-tx);
+}
+.sub-header.roxo {
+  color: var(--roxo-tx);
+  background: var(--roxo-bg);
+  border-color: var(--roxo-tx);
+}
+.croqui-box {
+  border: 2px dashed var(--cinza-ln);
+  border-radius: var(--radius-lg);
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cinza-ln);
+  font-size: 12px;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--cinza-bg);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.croqui-box:hover { border-color: var(--azul-med); background: var(--azul-claro); }
+.croqui-box canvas { max-width: 100%; border-radius: var(--radius); display: none; }
+
+/* ── TABELA DE MEDIÇÕES ── */
+.med-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+.med-table th {
+  background: var(--azul-med);
+  color: white;
+  font-weight: 600;
+  padding: 6px 8px;
+  text-align: left;
+  font-size: 10.5px;
+}
+.med-table td {
+  padding: 3px 4px;
+  border-bottom: 1px solid var(--cinza-ln);
+}
+.med-table tr:nth-child(even) td { background: var(--cinza-bg); }
+.med-table input[type="text"],
+.med-table input[type="number"],
+.med-table select {
+  width: 100%;
+  padding: 4px 6px;
+  font-size: 11px;
+  font-family: var(--font);
+  border: 1px solid var(--cinza-ln);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--txt);
+  outline: none;
+}
+.med-table input:focus,
+.med-table select:focus {
+  border-color: var(--azul-med);
+  background: white;
+}
+.med-table td:first-child {
+  font-weight: 600;
+  color: var(--azul);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  white-space: nowrap;
+  padding: 4px 8px;
+}
+
+/* ── CHECKLIST DE FOTOS ── */
+.foto-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border: 1px solid var(--cinza-ln);
+  border-radius: var(--radius);
+  background: var(--cinza-bg);
+  font-size: 11.5px;
+}
+.foto-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--azul);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  flex-shrink: 0;
+  font-family: var(--mono);
+}
+.foto-desc { flex: 1; line-height: 1.4; }
+.foto-quando {
+  font-size: 9.5px;
+  padding: 2px 7px;
+  border-radius: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.foto-file { font-size: 11px; color: var(--txt2); min-width: 80px; }
+.foto-check { flex-shrink: 0; width: 14px; height: 14px; accent-color: var(--azul); }
+.foto-item.done { background: var(--verde-bg); border-color: var(--verde-tx); }
+.foto-item.done .foto-num { background: var(--verde-tx); }
+
+/* ── ASSINATURA ── */
+.assinatura-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+@media (max-width: 600px) { .assinatura-grid { grid-template-columns: 1fr; } }
+.assinatura-box {
+  border: 1px solid var(--cinza-ln);
+  border-radius: var(--radius);
+  padding: 10px;
+  background: var(--cinza-bg);
+}
+.assinatura-box .linha-assinatura {
+  border-bottom: 1px solid var(--txt2);
+  height: 36px;
+  margin-bottom: 6px;
+}
+.assinatura-box .ass-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--txt2);
+  text-align: center;
+}
+
+/* ── RODAPÉ ── */
+.footer {
+  background: var(--azul);
+  color: rgba(255,255,255,0.65);
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 10px;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  line-height: 1.6;
+}
+
+/* ── IMPRESSÃO ── */
+@media print {
+  body { background: white; padding: 0; font-size: 11px; }
+  .wrapper { max-width: 100%; }
+  .toolbar, .progress-bar { display: none !important; }
+  .sec-toggle { display: none; }
+  .sec-body.collapsed { display: flex !important; }
+  .header { border-radius: 0; }
+  .secao:last-child { border-radius: 0; }
+  .footer { border-radius: 0; }
+  .secao { break-inside: avoid; }
+  .croqui-box { min-height: 100px; }
+  @page { margin: 14mm 12mm; }
+  .check-item, .campo input, .campo select, .campo textarea { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<!-- CABEÇALHO -->
+<div class="header">
+  <div class="header-left">
+    <h1>FICHA DE LEVANTAMENTO DE CAMPO — SPDA</h1>
+    <p>Gerenciamento de Risco conforme ABNT NBR 5419-2:2015<br>
+    Seção de Manutenção Elétrica · Divisão de Infraestrutura · GAP-SJ</p>
+  </div>
+  <div class="header-right">
+    Grupamento de Apoio de<br>São José dos Campos<br>
+    <strong style="color:var(--dourado)">GAP-SJ</strong>
+  </div>
+</div>
+
+<!-- BARRA DE PROGRESSO -->
+<div class="progress-bar">
+  <span style="font-size:11px;color:var(--txt2);white-space:nowrap">Preenchimento</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-label" id="progressLabel">0 de 0 campos</span>
+  <span class="saved-indicator" id="savedIndicator">
+    <svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="#3B6D11"/><path d="M3.5 6l1.8 1.8L8.5 4.5" stroke="white" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+    Salvo automaticamente
+  </span>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="btn btn-primary" onclick="window.print()">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1h8a1 1 0 011 1v3H3V2a1 1 0 011-1zM2 6h12a1 1 0 011 1v5a1 1 0 01-1 1h-2v-2H4v2H2a1 1 0 01-1-1V7a1 1 0 011-1zm2 4h8v4H4v-4z"/></svg>
+    Imprimir / Salvar PDF
+  </button>
+  <button class="btn" onclick="salvarJSON()">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1L14 7H10V15H6V7H2L8 1Z"/></svg>
+    Exportar dados (JSON)
+  </button>
+  <button class="btn" onclick="expandirTudo()">Expandir tudo</button>
+  <button class="btn" onclick="recolherTudo()">Recolher tudo</button>
+  <span class="toolbar-sep"></span>
+  <button class="btn btn-danger" onclick="if(confirm('Limpar todos os dados preenchidos?'))limparTudo()">Limpar</button>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 1 — IDENTIFICAÇÃO
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header" onclick="toggleSec(this)">
+    <span class="sec-num">01</span>
+    <span class="sec-title">Identificação da edificação</span>
+    <span class="sec-sub">Agente 1 — normaliza para JSON</span>
+    <span class="sec-badge badge-obrig">OBRIGATÓRIO</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="grid g13">
+      <div class="campo">
+        <label>Código GAP-SJ <span class="badge-mini badge-obrig">obrigatório</span></label>
+        <input type="text" id="codigo" placeholder="Ex: SP.033-67720-E-083">
+        <span class="hint">Código do cadastro de edificações do GAP-SJ</span>
+      </div>
+      <div class="campo">
+        <label>Denominação / nome da edificação <span class="badge-mini badge-obrig">obrigatório</span></label>
+        <input type="text" id="nome" placeholder="Ex: Refeitório dos Alunos do ITA — H15">
+      </div>
+    </div>
+    <div class="grid g4">
+      <div class="campo">
+        <label>Latitude <span class="badge-mini badge-calc">cálculo Ng/Cd</span></label>
+        <input type="text" id="lat" placeholder="-23.XXXXXX">
+      </div>
+      <div class="campo">
+        <label>Longitude <span class="badge-mini badge-calc">cálculo Ng/Cd</span></label>
+        <input type="text" id="lon" placeholder="-45.XXXXXX">
+      </div>
+      <div class="campo">
+        <label>Data da vistoria <span class="badge-mini badge-obrig">obrigatório</span></label>
+        <input type="date" id="data_vistoria">
+      </div>
+      <div class="campo">
+        <label>Número do laudo <span class="badge-mini badge-obrig">obrigatório</span></label>
+        <input type="text" id="num_laudo" placeholder="RL_SPDA__GAP-SJ/20__">
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="campo">
+        <label>Responsável pelo levantamento <span class="badge-mini badge-obrig">obrigatório</span></label>
+        <input type="text" id="responsavel" placeholder="Nome completo">
+      </div>
+      <div class="campo">
+        <label>Posto / Grad. / Matrícula</label>
+        <input type="text" id="matricula" placeholder="Ex: 2º Ten QOCon ELT / 123456">
+      </div>
+      <div class="campo">
+        <label>Instrumento calibrado (nº certificado)</label>
+        <input type="text" id="instrumento" placeholder="Marca / Modelo / Nº certif.">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 2 — DIMENSÕES
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header" onclick="toggleSec(this)">
+    <span class="sec-num">02</span>
+    <span class="sec-title">Dimensões da estrutura</span>
+    <span class="sec-sub">Agente 2 — calcula Ad e Nd</span>
+    <span class="sec-badge badge-calc">CÁLCULO NBR</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="grid g4">
+      <div class="campo">
+        <label>Comprimento L (m) <span class="badge-mini badge-calc">entra em Ad</span></label>
+        <input type="number" id="dim_l" placeholder="m" step="0.1" min="0">
+        <span class="hint">Dimensão horizontal maior — trena</span>
+      </div>
+      <div class="campo">
+        <label>Largura W (m) <span class="badge-mini badge-calc">entra em Ad</span></label>
+        <input type="number" id="dim_w" placeholder="m" step="0.1" min="0">
+      </div>
+      <div class="campo">
+        <label>Altura H (m) <span class="badge-mini badge-calc">entra em Ad</span></label>
+        <input type="number" id="dim_h" placeholder="m" step="0.1" min="0">
+        <span class="hint">Piso até ponto mais alto da cobertura</span>
+      </div>
+      <div class="campo">
+        <label>Área construída (m²) <span class="badge-mini badge-obrig">obrigatório</span></label>
+        <input type="number" id="area_const" placeholder="m²" step="0.01" min="0">
+        <span class="hint">Conferir com cadastro</span>
+      </div>
+    </div>
+    <div id="ad_preview" class="nota" style="display:none">
+      <strong>Ad calculada automaticamente:</strong> <span id="ad_valor">—</span> m² · Nd estimado (Ng=11,53): <span id="nd_valor">—</span> eventos/ano
+    </div>
+    <div class="nota"><strong>Orientação:</strong> Medir L, W e H com trena ou hipsômetro. H = do piso acabado até a cumeeira ou ponto mais alto. Se não houver planta: Área ≈ L × W. Registrar divergências em relação ao cadastro.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 3 — LOCALIZAÇÃO
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header" onclick="toggleSec(this)">
+    <span class="sec-num">03</span>
+    <span class="sec-title">Localização e entorno</span>
+    <span class="sec-sub">Agente 2 — define Cd e Cadj</span>
+    <span class="sec-badge badge-calc">CÁLCULO NBR</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="check-group">
+      <label>Entorno da estrutura — define Cd <span class="badge-mini badge-calc">define Cd</span></label>
+      <div class="check-options col2">
+        <label class="check-item"><input type="radio" name="entorno" value="0.25"> Cercada por objetos mais altos (Cd = 0,25)</label>
+        <label class="check-item"><input type="radio" name="entorno" value="0.5"> Objetos de mesma altura ou mais baixos (Cd = 0,5)</label>
+        <label class="check-item"><input type="radio" name="entorno" value="1.0"> Estrutura isolada — campo aberto (Cd = 1,0)</label>
+        <label class="check-item"><input type="radio" name="entorno" value="0.5b"> Campus / zona urbana consolidada (Cd = 0,5)</label>
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="campo">
+        <label>Árvores no entorno?</label>
+        <select id="arvores">
+          <option value="">— selecionar —</option>
+          <option>Não há árvores próximas</option>
+          <option>Sim — menores que a edif.</option>
+          <option>Sim — mesma altura</option>
+          <option>Sim — mais altas que a edif.</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Estruturas adjacentes? <span class="badge-mini badge-calc">define Cadj</span></label>
+        <select id="adj">
+          <option value="">— selecionar —</option>
+          <option>Não há estruturas adjacentes</option>
+          <option>Sim — distância: ____ m</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Tipo de solo predominante <span class="badge-mini badge-calc">define Pb</span></label>
+        <select id="solo">
+          <option value="">— selecionar —</option>
+          <option value="0.03">Agrícola / normal</option>
+          <option value="0.001">Concreto / metálico</option>
+          <option value="0.1">Rochoso / arenoso seco</option>
+          <option value="0.01">Úmido / pantanoso</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 4 — OCUPAÇÃO
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header" onclick="toggleSec(this)">
+    <span class="sec-num">04</span>
+    <span class="sec-title">Ocupação e uso</span>
+    <span class="sec-sub">Agente 2 — La, Lb, rt, rf, hz, rp</span>
+    <span class="sec-badge badge-calc">CÁLCULO NBR</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="check-group">
+      <label>Tipo de atividade / uso — define Lf e Lo</label>
+      <div class="check-options col3">
+        <label class="check-item"><input type="radio" name="uso" value="escritorio"> Escritório / administrativo</label>
+        <label class="check-item"><input type="radio" name="uso" value="industrial"> Industrial / produção / oficina</label>
+        <label class="check-item"><input type="radio" name="uso" value="refeitorio"> Refeitório / escola / auditório</label>
+        <label class="check-item"><input type="radio" name="uso" value="almoxarifado"> Almoxarifado / depósito</label>
+        <label class="check-item"><input type="radio" name="uso" value="residencial"> Residencial / alojamento</label>
+        <label class="check-item"><input type="radio" name="uso" value="servico"> Serviço essencial → calcular R2</label>
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="campo">
+        <label>Nº de ocupantes <span class="badge-mini badge-calc">entra em La</span></label>
+        <input type="number" id="ocup" placeholder="pessoas" min="0" oninput="calcTz()">
+        <span class="hint">Capacidade máxima ou média do turno</span>
+      </div>
+      <div class="campo">
+        <label>Horas/dia de ocupação <span class="badge-mini badge-calc">tz = h × 365</span></label>
+        <input type="number" id="horas_dia" placeholder="h/dia" min="0" max="24" oninput="calcTz()">
+      </div>
+      <div class="campo">
+        <label>tz calculado (h/ano) — automático</label>
+        <input type="number" id="tz_ano" placeholder="calculado" readonly style="background:#F0F8FF;color:var(--azul);font-weight:500">
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Risco de incêndio — define rf1 <span class="badge-mini badge-calc">define rf1</span></label>
+      <div class="check-options col3">
+        <label class="check-item"><input type="radio" name="rf" value="0.001"> Baixo — concreto / metálico (rf = 0,001)</label>
+        <label class="check-item"><input type="radio" name="rf" value="0.01"> Médio — materiais comuns / escritório (rf = 0,01)</label>
+        <label class="check-item"><input type="radio" name="rf" value="0.1"> Alto — papel / madeira / tinta / depósito (rf = 0,1)</label>
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Nível de pânico esperado — define hz <span class="badge-mini badge-calc">define hz</span></label>
+      <div class="check-options col3">
+        <label class="check-item"><input type="radio" name="hz" value="2"> Baixo — local familiar, adultos (hz = 2)</label>
+        <label class="check-item"><input type="radio" name="hz" value="5"> Normal — público geral (hz = 5)</label>
+        <label class="check-item"><input type="radio" name="hz" value="10"> Alto — crianças / pessoas expostas (hz = 10)</label>
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Medidas contra incêndio presentes — define rp1 <span class="badge-mini badge-calc">define rp1</span></label>
+      <div class="check-options col3">
+        <label class="check-item"><input type="checkbox" name="rp" value="extintor"> Extintor manual (ABC)</label>
+        <label class="check-item"><input type="checkbox" name="rp" value="alarme"> Alarme manual</label>
+        <label class="check-item"><input type="checkbox" name="rp" value="hidrante"> Hidrante</label>
+        <label class="check-item"><input type="checkbox" name="rp" value="sprinkler"> Sprinkler automático</label>
+        <label class="check-item"><input type="checkbox" name="rp" value="compartimento"> Compartimento resistente ao fogo</label>
+        <label class="check-item"><input type="checkbox" name="rp" value="nenhuma"> Nenhuma medida (rp = 1)</label>
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Classificação especial</label>
+      <div class="check-options col2">
+        <label class="check-item"><input type="checkbox" name="especial" value="patrimonio"> Patrimônio cultural → calcular R3</label>
+        <label class="check-item"><input type="checkbox" name="especial" value="hospital"> Hospital c/ equip. críticos → Rc e Rm</label>
+        <label class="check-item"><input type="checkbox" name="especial" value="explosao"> Risco de explosão → calcular Rc e Rm</label>
+        <label class="check-item"><input type="checkbox" name="especial" value="nenhuma"> Nenhuma das anteriores</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 5 — LINHAS
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header" onclick="toggleSec(this)">
+    <span class="sec-num">05</span>
+    <span class="sec-title">Linhas de energia e sinal</span>
+    <span class="sec-sub">Agente 2 — Ru11, Rv11 (Nlp, Nlt, Pup, Pvt)</span>
+    <span class="sec-badge badge-calc">CÁLCULO NBR</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="grid g2">
+      <div style="display:flex;flex-direction:column;gap:10px;padding:12px;background:var(--azul-claro);border-radius:var(--radius-lg);border:1px solid #C5D8EF">
+        <div class="sub-header">Linha de energia (ramal da concessionária)</div>
+        <div class="campo">
+          <label>Comprimento do ramal Lp (m) <span class="badge-mini badge-calc">entra em Nlp</span></label>
+          <input type="number" id="lp" placeholder="m" step="1" min="0">
+          <span class="hint">Do poste / transformador até o QG</span>
+        </div>
+        <div class="check-group">
+          <label>Instalação — define Cip</label>
+          <div class="check-options col2">
+            <label class="check-item"><input type="radio" name="cip" value="1"> Aérea (Cip = 1)</label>
+            <label class="check-item"><input type="radio" name="cip" value="0.5"> Enterrada (Cip = 0,5)</label>
+          </div>
+        </div>
+        <div class="check-group">
+          <label>Zona ambiental — define Cep</label>
+          <div class="check-options col3">
+            <label class="check-item"><input type="radio" name="cep" value="0.1"> Urbana (0,1)</label>
+            <label class="check-item"><input type="radio" name="cep" value="0.5"> Suburbana (0,5)</label>
+            <label class="check-item"><input type="radio" name="cep" value="1"> Rural (1,0)</label>
+          </div>
+        </div>
+        <div class="check-group">
+          <label>Linha externa? — define Cldp</label>
+          <div class="check-options col2" style="grid-template-columns:1fr;">
+            <label class="check-item"><input type="radio" name="cldp" value="0"> Não possui linha externa (sistema indep.) — Cldp = 0</label>
+            <label class="check-item"><input type="radio" name="cldp" value="0.5"> Possui — blindada + equipotencial — Cldp = 0,5</label>
+            <label class="check-item"><input type="radio" name="cldp" value="1"> Possui — aérea não blindada — Cldp = 1</label>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;padding:12px;background:var(--roxo-bg);border-radius:var(--radius-lg);border:1px solid #C8C3F5">
+        <div class="sub-header roxo">Linha de sinal (rede, telefonia, antena)</div>
+        <div class="campo">
+          <label>Comprimento do ramal Lt (m) <span class="badge-mini badge-calc">entra em Nlt</span></label>
+          <input type="number" id="lt" placeholder="m (estimar)" step="1" min="0">
+          <span class="hint">Até o 1º nó de distribuição externo ao campus</span>
+        </div>
+        <div class="check-group">
+          <label>Instalação — define Cit</label>
+          <div class="check-options col2">
+            <label class="check-item"><input type="radio" name="cit" value="1"> Aérea (Cit = 1)</label>
+            <label class="check-item"><input type="radio" name="cit" value="0.5"> Enterrada (Cit = 0,5)</label>
+          </div>
+        </div>
+        <div class="check-group">
+          <label>Zona ambiental — define Cet</label>
+          <div class="check-options col3">
+            <label class="check-item"><input type="radio" name="cet" value="0.1"> Urbana (0,1)</label>
+            <label class="check-item"><input type="radio" name="cet" value="0.5"> Suburbana (0,5)</label>
+            <label class="check-item"><input type="radio" name="cet" value="1"> Rural (1,0)</label>
+          </div>
+        </div>
+        <div class="check-group">
+          <label>Blindagem — define Cldt</label>
+          <div class="check-options col2" style="grid-template-columns:1fr;">
+            <label class="check-item"><input type="radio" name="cldt" value="0"> Blindada + equip. — Cldt = 0</label>
+            <label class="check-item"><input type="radio" name="cldt" value="1"> Aérea não blindada — Cldt = 1</label>
+            <label class="check-item"><input type="radio" name="cldt" value="na"> Não possui linha de sinal</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="campo">
+        <label>Tensão suportável Uw do sistema de sinal (kV) <span class="badge-mini badge-calc">define Pldt</span></label>
+        <input type="text" id="uw" placeholder="Ex: 1 kV — da especificação do equip.">
+      </div>
+      <div class="campo">
+        <label>Estruturas adjacentes às linhas?</label>
+        <input type="text" id="adj_linha" placeholder="Sim/Não — área Adj estimada (m²)">
+        <span class="hint">Define Ndjp e Ndjt</span>
+      </div>
+    </div>
+    <div class="nota"><strong>Lp:</strong> medir do ponto de entrada da energia (poste ou caixa medidora) até o QG. <strong>Lt:</strong> estimar o comprimento do cabo de rede / telefone até o 1º nó externo ao campus. Se não houver linha de sinal, anotar 0 em Lt.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 6 — PROTEÇÃO INTERNA
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header" onclick="toggleSec(this)">
+    <span class="sec-num">06</span>
+    <span class="sec-title">Proteção interna — DPS e aterramento</span>
+    <span class="sec-sub">Agente 2 — Peb, Pspd · Agente 3 — seção 5</span>
+    <span class="sec-badge badge-misto">CALC + LAUDO</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="check-group">
+      <label>DPS instalado — classe e nível — define Peb1 <span class="badge-mini badge-calc">define Peb1</span></label>
+      <div class="check-options col3">
+        <label class="check-item"><input type="radio" name="dps_classe" value="nenhum"> Não possui DPS — Peb = 1</label>
+        <label class="check-item"><input type="radio" name="dps_classe" value="II"> DPS Classe II — Peb = 0,02</label>
+        <label class="check-item"><input type="radio" name="dps_classe" value="I+II"> DPS Classe I + II — Pspd conf.</label>
+        <label class="check-item"><input type="radio" name="dps_classe" value="I+II+III"> DPS Classe I + II + III</label>
+        <label class="check-item"><input type="radio" name="dps_classe" value="desconhecido"> Classe desconhecida</label>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="campo">
+        <label>Marca e modelo do DPS <span class="badge-mini badge-obrig">obrigatório no laudo</span></label>
+        <input type="text" id="dps_modelo" placeholder="Ex: Clamper VLC 275V 40kA">
+      </div>
+      <div class="campo">
+        <label>Local de instalação do DPS <span class="badge-mini badge-obrig">obrigatório no laudo</span></label>
+        <input type="text" id="dps_local" placeholder="Ex: QDG / quadro distribuição sec.">
+      </div>
+    </div>
+    <div class="grid g4">
+      <div class="campo">
+        <label>Uc (V) <span class="badge-mini badge-obrig">laudo sec.5</span></label>
+        <input type="text" id="dps_uc" placeholder="Ex: 275 VCA">
+      </div>
+      <div class="campo">
+        <label>In (kA) <span class="badge-mini badge-obrig">laudo sec.5</span></label>
+        <input type="text" id="dps_in" placeholder="Ex: 20 kA">
+      </div>
+      <div class="campo">
+        <label>Imax (kA) <span class="badge-mini badge-obrig">laudo sec.5</span></label>
+        <input type="text" id="dps_imax" placeholder="Ex: 40 kA">
+      </div>
+      <div class="campo">
+        <label>Up (kV) <span class="badge-mini badge-obrig">laudo sec.5</span></label>
+        <input type="text" id="dps_up" placeholder="Ex: 1,5 kV">
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Esquema de aterramento — obrigatório no laudo (seção 5.2) <span class="badge-mini badge-obrig">obrigatório</span></label>
+      <div class="check-options col3">
+        <label class="check-item"><input type="radio" name="esquema_at" value="TN-S"> TN-S (N e PE separados após entrada)</label>
+        <label class="check-item"><input type="radio" name="esquema_at" value="TN-C"> TN-C (N e PE combinados)</label>
+        <label class="check-item"><input type="radio" name="esquema_at" value="TN-C-S"> TN-C-S (combinado até certo ponto)</label>
+        <label class="check-item"><input type="radio" name="esquema_at" value="TT"> TT (neutro aterrado, massas independentes)</label>
+        <label class="check-item"><input type="radio" name="esquema_at" value="IT"> IT (neutro isolado ou impedido)</label>
+        <label class="check-item"><input type="radio" name="esquema_at" value="nid"> Não identificado</label>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="campo">
+        <label>Barramento aterramento no QDG interligado ao anel?</label>
+        <select id="barramento_eq">
+          <option value="">— selecionar —</option>
+          <option>Sim — interligado ao anel</option>
+          <option>Não — NC identificada</option>
+          <option>Não foi possível verificar</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Resistência equipotencial medida (Ω) <span class="badge-mini badge-spda">medição Anexo II</span></label>
+        <input type="text" id="r_equip" placeholder="Entre barramento QDG e anel — micro-ohmímetro">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 7A — CAPTAÇÃO
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header verde" onclick="toggleSec(this)">
+    <span class="sec-num">07A</span>
+    <span class="sec-title">SPDA existente — subsistema de captação</span>
+    <span class="sec-sub">Agente 3 — seção 4.1</span>
+    <span class="sec-badge badge-spda">SE SPDA INSTALADO</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="check-group">
+      <label>Classe / nível do SPDA — define Pb no cálculo <span class="badge-mini badge-calc">define Pb</span></label>
+      <div class="check-options col3">
+        <label class="check-item"><input type="radio" name="spda_nivel" value="I_0.02"> Classe I — Pb = 0,02</label>
+        <label class="check-item"><input type="radio" name="spda_nivel" value="II_0.05"> Classe II — Pb = 0,05</label>
+        <label class="check-item"><input type="radio" name="spda_nivel" value="III_0.1"> Classe III — Pb = 0,1</label>
+        <label class="check-item"><input type="radio" name="spda_nivel" value="IV_0.2"> Classe IV — Pb = 0,2</label>
+        <label class="check-item"><input type="radio" name="spda_nivel" value="desc"> Classe desconhecida</label>
+        <label class="check-item"><input type="radio" name="spda_nivel" value="nao"> Não possui SPDA</label>
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Tipo de captor</label>
+      <div class="check-options col2">
+        <label class="check-item"><input type="radio" name="captor_tipo" value="malha"> Malha condutora (gaiola de Faraday)</label>
+        <label class="check-item"><input type="radio" name="captor_tipo" value="mastro"> Mastro (Franklin)</label>
+        <label class="check-item"><input type="radio" name="captor_tipo" value="cabo"> Cabo aéreo (catenária)</label>
+        <label class="check-item"><input type="radio" name="captor_tipo" value="combinado"> Combinado — malha + mastro</label>
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="campo">
+        <label>Espaçamento da malha (m × m)</label>
+        <input type="text" id="espac_malha" placeholder="Ex: 10 × 5">
+        <span class="hint">Verificar vs nível: I=5×5 / II=10×10 / III=15×15 / IV=20×20</span>
+      </div>
+      <div class="campo">
+        <label>Material / seção do condutor</label>
+        <input type="text" id="mat_captor" placeholder="Ex: Cu nu 35mm² (7 fios)">
+      </div>
+      <div class="campo">
+        <label>Tipo de conector de malha</label>
+        <input type="text" id="conector_malha" placeholder="Ex: parafuso fendido / solda">
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Interrupções ou falhas na malha? (NC grave — ref. item 5.2.2 NBR 5419-3)</label>
+      <div class="check-options col3">
+        <label class="check-item"><input type="radio" name="nc_malha" value="nao"> Não há interrupções — malha contínua</label>
+        <label class="check-item"><input type="radio" name="nc_malha" value="sim"> Sim — localizar, medir e fotografar — NC</label>
+        <label class="check-item"><input type="radio" name="nc_malha" value="nv"> Não foi possível inspecionar</label>
+      </div>
+    </div>
+    <div class="campo">
+      <label>Descrição das não conformidades na captação</label>
+      <textarea id="nc_captacao_desc" placeholder="Ex: 10m de malha interrompida próximo à chaminé nordeste — ver Figura X" rows="2"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 7B — DESCIDAS
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header verde" onclick="toggleSec(this)">
+    <span class="sec-num">07B</span>
+    <span class="sec-title">SPDA existente — subsistema de descida</span>
+    <span class="sec-sub">Agente 3 — seção 4.2</span>
+    <span class="sec-badge badge-spda">SE SPDA INSTALADO</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="grid g3">
+      <div class="campo">
+        <label>Número de descidas identificadas</label>
+        <input type="number" id="n_descidas" placeholder="qtd." min="0">
+      </div>
+      <div class="campo">
+        <label>Material / seção da descida</label>
+        <input type="text" id="mat_descida" placeholder="Ex: Cu nu 35mm² (7 fios)">
+      </div>
+      <div class="campo">
+        <label>Espaçamento médio entre descidas (m)</label>
+        <input type="text" id="espac_descida" placeholder="Perímetro ÷ nº descidas">
+        <span class="hint">Verificar vs nível: I=10m / II=15m / III=20m / IV=25m</span>
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Instalação das descidas</label>
+      <div class="check-options col2">
+        <label class="check-item"><input type="radio" name="inst_descida" value="aparente_iso"> Aparente com isoladores</label>
+        <label class="check-item"><input type="radio" name="inst_descida" value="eletroduto"> Embutida em eletroduto</label>
+        <label class="check-item"><input type="radio" name="inst_descida" value="aparente_sf"> Aparente sem fixação adequada</label>
+        <label class="check-item"><input type="radio" name="inst_descida" value="nid"> Não foi possível identificar</label>
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Proteção mecânica (eletroduto) até 2–3 m do solo — ref. item 5.3 NBR 5419-3</label>
+      <div class="check-options col2">
+        <label class="check-item"><input type="radio" name="prot_mec" value="galv"> Sim — eletroduto galvanizado</label>
+        <label class="check-item"><input type="radio" name="prot_mec" value="pvc"> Sim — eletroduto PVC rígido</label>
+        <label class="check-item"><input type="radio" name="prot_mec" value="parcial"> Parcialmente — somente algumas descidas</label>
+        <label class="check-item"><input type="radio" name="prot_mec" value="nao"> Não possui proteção mecânica — NC</label>
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Caixas de inspeção / condulete presentes e acessíveis?</label>
+      <div class="check-options col2">
+        <label class="check-item"><input type="radio" name="cx_insp" value="todas"> Sim — todas acessíveis</label>
+        <label class="check-item"><input type="radio" name="cx_insp" value="parcial"> Parcialmente — algumas inacessíveis</label>
+        <label class="check-item"><input type="radio" name="cx_insp" value="nao"> Não possui caixas de inspeção — NC</label>
+        <label class="check-item"><input type="radio" name="cx_insp" value="nv"> Não foi possível verificar</label>
+      </div>
+    </div>
+    <div class="campo">
+      <label>Descrição das não conformidades nas descidas</label>
+      <textarea id="nc_descida_desc" placeholder="Ex: 3 descidas sem proteção mecânica na fachada sul — ref. item 5.3.3 NBR 5419-3" rows="2"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 7C — ATERRAMENTO
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header verde" onclick="toggleSec(this)">
+    <span class="sec-num">07C</span>
+    <span class="sec-title">SPDA existente — subsistema de aterramento</span>
+    <span class="sec-sub">Agente 3 — seção 4.3</span>
+    <span class="sec-badge badge-spda">SE SPDA INSTALADO</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="grid g3">
+      <div class="campo">
+        <label>Tipo de eletrodo de aterramento</label>
+        <select id="tipo_eletrodo">
+          <option value="">— selecionar —</option>
+          <option>Anel (anel de aterramento)</option>
+          <option>Haste vertical</option>
+          <option>Placa</option>
+          <option>Misto — anel + hastes</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Profundidade média do anel (cm)</label>
+        <input type="number" id="prof_anel" placeholder="cm" min="0">
+        <span class="hint">Medir em pontos acessíveis</span>
+      </div>
+      <div class="campo">
+        <label>Afastamento máximo da parede (cm)</label>
+        <input type="number" id="afas_anel" placeholder="cm — ref.: máx. 60 cm" min="0">
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="campo">
+        <label>Material / seção do anel</label>
+        <input type="text" id="mat_anel" placeholder="Ex: Cu nu 35mm²">
+      </div>
+      <div class="campo">
+        <label>Nº de caixas de inspeção do anel</label>
+        <input type="number" id="n_cx_anel" placeholder="qtd. — deve = nº descidas" min="0">
+      </div>
+      <div class="campo">
+        <label>Tipo de conector anel–descida</label>
+        <input type="text" id="conector_anel" placeholder="Ex: grampo / solda exotérmica">
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Estado de oxidação dos grampos / conectores — fotografar</label>
+      <div class="check-options col2">
+        <label class="check-item"><input type="radio" name="oxidacao" value="baixa"> Baixa oxidação — sem ação imediata</label>
+        <label class="check-item"><input type="radio" name="oxidacao" value="media"> Média oxidação — monitorar</label>
+        <label class="check-item"><input type="radio" name="oxidacao" value="alta"> Alta oxidação — substituir — NC</label>
+        <label class="check-item"><input type="radio" name="oxidacao" value="solda"> Solda exotérmica — sem oxidação</label>
+      </div>
+    </div>
+    <div class="check-group">
+      <label>Trecho do anel exposto acima do solo? — ref. item 7.3.2.2 NBR 5419-3</label>
+      <div class="check-options col2">
+        <label class="check-item"><input type="radio" name="anel_exposto" value="nao"> Não — totalmente enterrado</label>
+        <label class="check-item"><input type="radio" name="anel_exposto" value="sim"> Sim — localizar e fotografar — NC</label>
+      </div>
+    </div>
+    <div class="campo">
+      <label>Descrição das não conformidades no aterramento</label>
+      <textarea id="nc_aterr_desc" placeholder="Ex: trecho de 0,5m exposto próximo à porta da sala de máquinas (sudoeste) — ref. item 7.3.2.2 NBR 5419-3" rows="2"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 8 — MEDIÇÕES
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header verde" onclick="toggleSec(this)">
+    <span class="sec-num">08</span>
+    <span class="sec-title">Medições elétricas — Anexo II do laudo</span>
+    <span class="sec-sub">Terrômetro + micro-ohmímetro</span>
+    <span class="sec-badge badge-spda">MEDIÇÕES</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="sub-header">8.1 — Continuidade das descidas (micro-ohmímetro)</div>
+    <div class="campo">
+      <label>Corrente de teste utilizada (A)</label>
+      <input type="text" id="corrente_cont" placeholder="Ex: 10 A — conforme certificado do instrumento" style="max-width:320px">
+    </div>
+    <div style="overflow-x:auto">
+      <table class="med-table" id="tbl_cont">
+        <thead><tr>
+          <th style="width:50px">Desc.</th>
+          <th>Local / ponto de medição</th>
+          <th style="width:110px">Resistência (mΩ)</th>
+          <th style="width:100px">Situação</th>
+          <th>Observações</th>
+          <th style="width:50px">Foto?</th>
+        </tr></thead>
+        <tbody id="tbody_cont"></tbody>
+      </table>
+    </div>
+    <div class="sep"></div>
+    <div class="sub-header">8.2 — Resistência de aterramento (terrômetro)</div>
+    <div class="campo">
+      <label>Método de medição utilizado</label>
+      <input type="text" id="metodo_at" placeholder="Ex: três terminais / quatro terminais / clamp" style="max-width:320px">
+    </div>
+    <div style="overflow-x:auto">
+      <table class="med-table" id="tbl_at">
+        <thead><tr>
+          <th>Ponto medido</th>
+          <th style="width:120px">R medido (Ω)</th>
+          <th style="width:120px">R tolerável (Ω)</th>
+          <th style="width:100px">Situação</th>
+          <th>Observações</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Desc. 1 e 5 (opostos)</td><td><input type="text" placeholder="Ω"></td><td><input type="text" value="≤ 10 Ω" readonly style="color:var(--txt2)"></td><td><select><option>—</option><option>Conforme</option><option>Não conforme</option></select></td><td><input type="text" placeholder="obs."></td></tr>
+          <tr><td>Desc. 2 e 6 (opostos)</td><td><input type="text" placeholder="Ω"></td><td><input type="text" value="≤ 10 Ω" readonly style="color:var(--txt2)"></td><td><select><option>—</option><option>Conforme</option><option>Não conforme</option></select></td><td><input type="text" placeholder="obs."></td></tr>
+          <tr><td>Desc. 3 e 7 (opostos)</td><td><input type="text" placeholder="Ω"></td><td><input type="text" value="≤ 10 Ω" readonly style="color:var(--txt2)"></td><td><select><option>—</option><option>Conforme</option><option>Não conforme</option></select></td><td><input type="text" placeholder="obs."></td></tr>
+          <tr><td>Desc. 4 e 8 (opostos)</td><td><input type="text" placeholder="Ω"></td><td><input type="text" value="≤ 10 Ω" readonly style="color:var(--txt2)"></td><td><select><option>—</option><option>Conforme</option><option>Não conforme</option></select></td><td><input type="text" placeholder="obs."></td></tr>
+          <tr><td>Ponto adicional</td><td><input type="text" placeholder="Ω"></td><td><input type="text" value="≤ 10 Ω" readonly style="color:var(--txt2)"></td><td><select><option>—</option><option>Conforme</option><option>Não conforme</option></select></td><td><input type="text" placeholder="obs."></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="nota"><strong>Instrumento:</strong> anotar marca, modelo e nº do certificado de calibração (campo seção 1). Corrente de teste recomendada: 10 A. Registrar condições do solo (seco / úmido) e temperatura no momento da medição.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 9 — CHECKLIST DE FOTOS
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header" onclick="toggleSec(this)">
+    <span class="sec-num">09</span>
+    <span class="sec-title">Checklist de fotografias</span>
+    <span class="sec-sub">Agente 3 usa as fotos para ilustrar as seções 4 e 5 do laudo</span>
+    <span class="sec-badge badge-obrig">OBRIGATÓRIO</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body" id="foto_list" style="gap:6px"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 10 — OBSERVAÇÕES E CROQUI
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header" onclick="toggleSec(this)">
+    <span class="sec-num">10</span>
+    <span class="sec-title">Observações gerais e croqui</span>
+    <span class="sec-sub">Informações complementares para o Agente 3</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="grid g2">
+      <div class="campo">
+        <label>Observações gerais</label>
+        <textarea id="obs_gerais" rows="5" placeholder="Histórico de incidentes, condições especiais de acesso, equipamentos críticos, riscos não cobertos pelos campos anteriores..."></textarea>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;display:block;margin-bottom:5px">Croqui — planta simplificada</label>
+        <div class="croqui-box" id="croquiBox" onclick="iniciarCroqui()">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <span>Clique para desenhar o croqui</span>
+          <span style="font-size:10px">Indicar L, W, norte, entradas de energia/sinal, NCs</span>
+        </div>
+        <canvas id="croquiCanvas" style="display:none;border:1px solid var(--cinza-ln);border-radius:var(--radius);width:100%;cursor:crosshair"></canvas>
+        <div id="croquiTools" style="display:none;margin-top:6px;display:none;gap:6px">
+          <button class="btn" onclick="limparCroqui()">Limpar croqui</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     SEÇÃO 11 — ASSINATURAS
+═════════════════════════════════════════════════════════ -->
+<div class="secao">
+  <div class="sec-header" onclick="toggleSec(this)">
+    <span class="sec-num">11</span>
+    <span class="sec-title">Responsabilidade técnica</span>
+    <span class="sec-sub">Assinaturas obrigatórias antes do envio ao Agente 1</span>
+    <span class="sec-badge badge-obrig">OBRIGATÓRIO</span>
+    <span class="sec-toggle open">▾</span>
+  </div>
+  <div class="sec-body">
+    <div class="assinatura-grid">
+      <div class="assinatura-box">
+        <div class="campo" style="margin-bottom:6px">
+          <label>Nome completo</label>
+          <input type="text" id="ass1_nome" placeholder="Responsável pelo levantamento">
+        </div>
+        <div class="assinatura-box" style="border:none;padding:0">
+          <div class="assinatura-box" style="border:none;padding:0">
+            <div class="linha-assinatura"></div>
+            <div class="ass-label">Responsável pelo levantamento</div>
+          </div>
+        </div>
+      </div>
+      <div class="assinatura-box">
+        <div class="campo" style="margin-bottom:6px">
+          <label>Nome completo</label>
+          <input type="text" id="ass2_nome" placeholder="Chefe da Seção de Manut. Elétrica">
+        </div>
+        <div class="linha-assinatura"></div>
+        <div class="ass-label">Verificado por — Chefe da Seção de Manutenção Elétrica</div>
+      </div>
+      <div class="assinatura-box">
+        <div class="campo" style="margin-bottom:6px">
+          <label>Nome completo</label>
+          <input type="text" id="ass3_nome" placeholder="Chefe da Divisão de Infraestrutura">
+        </div>
+        <div class="linha-assinatura"></div>
+        <div class="ass-label">Aprovado por — Chefe da Divisão de Infraestrutura</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RODAPÉ -->
+<div class="footer">
+  Esta ficha alimenta o pipeline de Agentes de IA (Agente 1 → 2 → 3) para geração automática do Laudo SPDA no padrão GAP-SJ / NBR 5419:2015<br>
+  Seção de Manutenção Elétrica · Divisão de Infraestrutura · Grupamento de Apoio de São José dos Campos
+</div>
+
+</div><!-- /wrapper -->
+
+<script>
+// ── TOGGLE SEÇÕES ────────────────────────────────────────
+function toggleSec(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.sec-toggle');
+  body.classList.toggle('collapsed');
+  toggle.classList.toggle('open');
+}
+function expandirTudo() {
+  document.querySelectorAll('.sec-body').forEach(b => b.classList.remove('collapsed'));
+  document.querySelectorAll('.sec-toggle').forEach(t => t.classList.add('open'));
+}
+function recolherTudo() {
+  document.querySelectorAll('.sec-body').forEach(b => b.classList.add('collapsed'));
+  document.querySelectorAll('.sec-toggle').forEach(t => t.classList.remove('open'));
+}
+
+// ── CHECKBOXES / RADIOS VISUAIS ──────────────────────────
+document.addEventListener('change', function(e) {
+  const inp = e.target;
+  if (inp.type === 'checkbox' || inp.type === 'radio') {
+    const item = inp.closest('.check-item');
+    if (!item) return;
+    if (inp.type === 'radio') {
+      document.querySelectorAll(`input[name="${inp.name}"]`).forEach(r => {
+        r.closest('.check-item')?.classList.remove('checked','checked-verde','checked-verm');
+      });
+    }
+    if (inp.checked) item.classList.add('checked');
+    else item.classList.remove('checked');
+  }
+  atualizarProgresso();
+  salvarLocal();
+});
+
+// ── CÁLCULO AUTOMÁTICO tz ────────────────────────────────
+function calcTz() {
+  const h = parseFloat(document.getElementById('horas_dia').value) || 0;
+  document.getElementById('tz_ano').value = h > 0 ? Math.round(h * 365) : '';
+}
+
+// ── CÁLCULO Ad / Nd ──────────────────────────────────────
+function calcAd() {
+  const L = parseFloat(document.getElementById('dim_l').value) || 0;
+  const W = parseFloat(document.getElementById('dim_w').value) || 0;
+  const H = parseFloat(document.getElementById('dim_h').value) || 0;
+  const prev = document.getElementById('ad_preview');
+  if (L > 0 && W > 0 && H > 0) {
+    const Ad = (L*W + 6*H*(L+W) + 9*Math.PI*H*H);
+    const Nd = 11.53 * Ad * 0.5 * 1e-6;
+    document.getElementById('ad_valor').textContent = Ad.toFixed(1);
+    document.getElementById('nd_valor').textContent = Nd.toFixed(5);
+    prev.style.display = 'block';
+  } else {
+    prev.style.display = 'none';
+  }
+}
+['dim_l','dim_w','dim_h'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcAd);
+});
+
+// ── PROGRESSO ────────────────────────────────────────────
+function atualizarProgresso() {
+  const inputs = document.querySelectorAll('input:not([readonly]):not([type="checkbox"]):not([type="radio"]), select, textarea');
+  const radios = {};
+  document.querySelectorAll('input[type="radio"]').forEach(r => { radios[r.name] = radios[r.name] || false; if(r.checked) radios[r.name] = true; });
+  let total = inputs.length + Object.keys(radios).length;
+  let filled = 0;
+  inputs.forEach(inp => { if(inp.value && inp.value.trim() !== '') filled++; });
+  Object.values(radios).forEach(v => { if(v) filled++; });
+  const pct = total > 0 ? Math.round(filled / total * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${filled} de ${total} campos (${pct}%)`;
+}
+
+// ── AUTO-SAVE LOCAL ───────────────────────────────────────
+let saveTimer;
+function salvarLocal() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    const data = coletarDados();
+    localStorage.setItem('spda_ficha_gasjc', JSON.stringify(data));
+    const ind = document.getElementById('savedIndicator');
+    ind.classList.add('show');
+    setTimeout(() => ind.classList.remove('show'), 2500);
+  }, 800);
+}
+
+function coletarDados() {
+  const data = {};
+  document.querySelectorAll('input:not([type=checkbox]):not([type=radio]), select, textarea').forEach(el => {
+    if (el.id) data[el.id] = el.value;
+  });
+  document.querySelectorAll('input[type=radio]:checked').forEach(r => { data['radio_'+r.name] = r.value; });
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => { data['cb_'+cb.name+'_'+cb.value] = cb.checked; });
+  // tabela cont
+  const rows = [];
+  document.querySelectorAll('#tbody_cont tr').forEach(tr => {
+    const cells = tr.querySelectorAll('input, select');
+    rows.push(Array.from(cells).map(c => c.value));
+  });
+  data['tabela_continuidade'] = rows;
+  return data;
+}
+
+function restaurarLocal() {
+  const raw = localStorage.getItem('spda_ficha_gasjc');
+  if (!raw) return;
+  try {
+    const data = JSON.parse(raw);
+    Object.entries(data).forEach(([k, v]) => {
+      if (k.startsWith('radio_')) {
+        const name = k.replace('radio_', '');
+        const r = document.querySelector(`input[type=radio][name="${name}"][value="${v}"]`);
+        if (r) { r.checked = true; r.closest('.check-item')?.classList.add('checked'); }
+      } else if (k.startsWith('cb_')) {
+        const parts = k.replace('cb_','').split('_');
+        const name = parts.slice(0,-1).join('_');
+        const val = parts[parts.length-1];
+        const cb = document.querySelector(`input[type=checkbox][name="${name}"][value="${val}"]`);
+        if (cb) { cb.checked = !!v; if(v) cb.closest('.check-item')?.classList.add('checked'); }
+      } else if (k === 'tabela_continuidade') {
+        // skip
+      } else {
+        const el = document.getElementById(k);
+        if (el) el.value = v;
+      }
+    });
+    calcTz(); calcAd(); atualizarProgresso();
+  } catch(e) {}
+}
+
+// ── EXPORTAR JSON ────────────────────────────────────────
+function salvarJSON() {
+  const data = coletarDados();
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], {type:'application/json'});
+  const a = document.createElement('a');
+  const codigo = document.getElementById('codigo').value || 'edificacao';
+  a.href = URL.createObjectURL(blob);
+  a.download = `SPDA_${codigo.replace(/[^a-zA-Z0-9]/g,'_')}.json`;
+  a.click();
+}
+
+// ── LIMPAR ───────────────────────────────────────────────
+function limparTudo() {
+  document.querySelectorAll('input:not([readonly]), select, textarea').forEach(el => { el.value = ''; });
+  document.querySelectorAll('input[type=checkbox], input[type=radio]').forEach(el => { el.checked = false; });
+  document.querySelectorAll('.check-item').forEach(el => el.classList.remove('checked','checked-verde','checked-verm'));
+  localStorage.removeItem('spda_ficha_gasjc');
+  atualizarProgresso();
+}
+
+// ── CHECKLIST DE FOTOS ───────────────────────────────────
+const fotos = [
+  { desc: 'Fachada geral da edificação', quando: 'Sempre', bg: '#FDEEEE', tx: '#791F1F' },
+  { desc: 'Vista geral da cobertura com a malha', quando: 'Se SPDA', bg: '#EAF3DE', tx: '#3B6D11' },
+  { desc: 'Detalhe da malha — espaçamento e conectores', quando: 'Se SPDA', bg: '#EAF3DE', tx: '#3B6D11' },
+  { desc: 'Interrupção ou falha na malha', quando: 'Se NC', bg: '#FDF3DC', tx: '#7B5E00' },
+  { desc: 'Descida com proteção mecânica (eletroduto)', quando: 'Se SPDA', bg: '#EAF3DE', tx: '#3B6D11' },
+  { desc: 'Descida sem proteção mecânica — NC', quando: 'Se NC', bg: '#FDF3DC', tx: '#7B5E00' },
+  { desc: 'Caixa de inspeção aberta com conector visível', quando: 'Se SPDA', bg: '#EAF3DE', tx: '#3B6D11' },
+  { desc: 'Grampos com oxidação — detalhe', quando: 'Se NC', bg: '#FDF3DC', tx: '#7B5E00' },
+  { desc: 'Trecho de anel exposto acima do solo', quando: 'Se NC', bg: '#FDF3DC', tx: '#7B5E00' },
+  { desc: 'QDG aberto mostrando o DPS instalado', quando: 'Se DPS', bg: '#EAF3DE', tx: '#3B6D11' },
+  { desc: 'Close na plaqueta de dados do DPS', quando: 'Se DPS', bg: '#EAF3DE', tx: '#3B6D11' },
+  { desc: 'Barramento de aterramento no QDG', quando: 'Se SPDA', bg: '#EAF3DE', tx: '#3B6D11' },
+  { desc: 'Instrumento de medição em uso', quando: 'Sempre', bg: '#FDEEEE', tx: '#791F1F' },
+  { desc: 'Outras não conformidades identificadas', quando: 'Se NC', bg: '#FDF3DC', tx: '#7B5E00' },
+];
+
+const fotoList = document.getElementById('foto_list');
+fotos.forEach((f, i) => {
+  const div = document.createElement('div');
+  div.className = 'foto-item';
+  div.innerHTML = `
+    <div class="foto-num">${i+1}</div>
+    <div class="foto-desc">${f.desc}</div>
+    <span class="foto-quando" style="background:${f.bg};color:${f.tx}">${f.quando}</span>
+    <input type="text" class="foto-file" placeholder="nome do arquivo" style="padding:3px 6px;border:1px solid var(--cinza-ln);border-radius:3px;font-size:11px;font-family:var(--mono);max-width:130px">
+    <input type="checkbox" class="foto-check" onchange="this.closest('.foto-item').classList.toggle('done',this.checked);salvarLocal()">`;
+  fotoList.appendChild(div);
+});
+
+// ── TABELA DE CONTINUIDADE DINÂMICA ─────────────────────
+function gerarTabelaCont() {
+  const tbody = document.getElementById('tbody_cont');
+  for (let i = 1; i <= 8; i++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${i}</td>
+      <td><input type="text" placeholder="Ex: fachada norte — caixa ${i}"></td>
+      <td><input type="number" placeholder="mΩ" step="0.1" min="0"></td>
+      <td><select><option>—</option><option>Conforme</option><option>Não conforme</option></select></td>
+      <td><input type="text" placeholder="obs."></td>
+      <td><input type="text" placeholder="F__"></td>`;
+    tbody.appendChild(tr);
+  }
+}
+gerarTabelaCont();
+
+// ── CROQUI (canvas simples) ──────────────────────────────
+let desenhando = false, lastX, lastY;
+let croquiIniciado = false;
+
+function iniciarCroqui() {
+  if (croquiIniciado) return;
+  croquiIniciado = true;
+  const box = document.getElementById('croquiBox');
+  const canvas = document.getElementById('croquiCanvas');
+  const tools = document.getElementById('croquiTools');
+  box.style.display = 'none';
+  canvas.style.display = 'block';
+  tools.style.display = 'flex';
+  canvas.width = canvas.offsetWidth * 2;
+  canvas.height = 280;
+  canvas.style.height = '140px';
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#FAFAF8';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = '#BBBBBB';
+  ctx.setLineDash([4,4]);
+  for (let x = 0; x < canvas.width; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke(); }
+  for (let y = 0; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke(); }
+  ctx.setLineDash([]);
+  ctx.strokeStyle = '#1A3A6B';
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    if (e.touches) return [(e.touches[0].clientX - rect.left) * scaleX, (e.touches[0].clientY - rect.top) * scaleY];
+    return [(e.clientX - rect.left) * scaleX, (e.clientY - rect.top) * scaleY];
+  }
+
+  canvas.addEventListener('mousedown', e => { desenhando = true; [lastX, lastY] = getPos(e); });
+  canvas.addEventListener('mousemove', e => {
+    if (!desenhando) return;
+    const [x, y] = getPos(e);
+    ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+    [lastX, lastY] = [x, y];
+  });
+  canvas.addEventListener('mouseup', () => desenhando = false);
+  canvas.addEventListener('mouseleave', () => desenhando = false);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); desenhando = true; [lastX, lastY] = getPos(e); });
+  canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (!desenhando) return;
+    const [x, y] = getPos(e);
+    ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+    [lastX, lastY] = [x, y];
+  });
+  canvas.addEventListener('touchend', () => desenhando = false);
+}
+
+function limparCroqui() {
+  const canvas = document.getElementById('croquiCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#FAFAF8';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = '#BBBBBB';
+  ctx.setLineDash([4,4]);
+  for (let x = 0; x < canvas.width; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke(); }
+  for (let y = 0; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke(); }
+  ctx.setLineDash([]);
+}
+
+// ── INPUTS → CAMPO FILLED ────────────────────────────────
+document.addEventListener('input', function(e) {
+  const campo = e.target.closest('.campo');
+  if (campo) campo.classList.toggle('filled', !!e.target.value);
+  atualizarProgresso();
+  salvarLocal();
+  calcTz();
+});
+
+// ── INIT ─────────────────────────────────────────────────
+restaurarLocal();
+atualizarProgresso();
+</script>
+</body>
+</html>
